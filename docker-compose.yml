@@ -1,0 +1,45 @@
+version: '3.9'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "${PORT}:${DOCKER_PORT}"
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks: 
+      - product-links-be
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    restart: always
+    environment:
+      SA_PASSWORD: "${DATABASE_PASSWORD}"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "${DATABASE_PORT}:${DATABASE_DOCKER_PORT}"
+    volumes:
+      - mssql_data:/var/opt/mssql
+    networks:
+      - product-links-be
+
+  redis:
+    image: redis:7
+    ports:
+      - "${REDIS_PORT}:${REDIS_DOCKER_PORT}"
+    networks: 
+      - product-links-be
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  mssql_data:
+
+networks:
+  product-links-be: {}

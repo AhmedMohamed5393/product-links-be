@@ -1,0 +1,8 @@
+export enum ProductEnum {
+  PAYTALLY = "PAYTALLY",
+  AQARI = "AQARI",
+  CORPORATE = "CORPORATE",
+  RETAIL = "RETAIL",
+  REMITTANCE = "REMITTANCE",
+  KIB_INVEST = "KIB_INVEST",
+};
