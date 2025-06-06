@@ -43,7 +43,7 @@ export class DynamicLinksService {
       shortCode = existing.shortCode;
     }
 
-    return this.formatShortUrl(product, shortCode);
+    return this.formatShortUrl(originalUrl, shortCode);
   }
 
   public async resolve(shortCode: string): Promise<string> {
@@ -68,8 +68,8 @@ export class DynamicLinksService {
     return finalUrl;
   }
 
-  private formatShortUrl(product: string, code: string): string {
-    const domain = this.config.products.find(p => p.product === product)?.domain;
+  private formatShortUrl(originalUrl: string, code: string): string {
+    const domain = `${originalUrl.split('.')[0]}.page.link`;
     return `${domain}/${code}?d=1`;
   }
 }
