@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { DynamicLinksService } from '../dynamic-links.service';
 import { RedisService } from '../../shared/services/redis.service';
-import { LoggingService } from '../../shared/logging/logging.service';
+import { LoggingService } from '../../shared/modules/logging/logging.service';
 import { DynamicLinkRepository } from '../repositories/dynamic-links.repository';
 import { CreateLinkDto } from '../dtos/create-link.dto';
 import { NotFoundException } from '@nestjs/common';

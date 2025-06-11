@@ -5,7 +5,7 @@ import { DynamicLinksController } from "./dynamic-links.controller";
 import { DynamicLinksService } from "./dynamic-links.service";
 import { DynamicLink } from "./entities/dynamic-links.entity";
 import { DynamicLinkRepository } from "./repositories/dynamic-links.repository";
-import { LoggingModule } from "@shared/logging/logging.module";
+import { LoggingModule } from "@shared/modules/logging/logging.module";
 import { dynamicLinkConfig, DynamicLinkConfigProvider } from "./config/dynamic-links.config";
 
 @Module({

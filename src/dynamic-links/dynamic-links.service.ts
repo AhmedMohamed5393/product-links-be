@@ -1,5 +1,5 @@
 import { Injectable, Inject, NotFoundException } from "@nestjs/common";
-import { LoggingService } from "../shared/logging/logging.service";
+import { LoggingService } from "../shared/modules/logging/logging.service";
 import { CreateLinkDto } from "./dtos/create-link.dto";
 import { DynamicLink } from "./entities/dynamic-links.entity";
 import {
@@ -31,19 +31,21 @@ export class DynamicLinksService {
     if (!existing) {
       shortCode = generateShortCode();
 
+      // insert dynamic link data in the internal database
       const payload = { ...dto, shortCode } as unknown as DynamicLink;
       await this.repository.create(payload);
 
       await this.loggingService.createLog({
         title: `Generate a dynamic link`,
-        action: `Generate a dynamic link for a product ${dto.product}`,
+        action: `Generate a dynamic link for a product ${product}`,
         entity: 'DynamicLink',
       });
     } else {
       shortCode = existing.shortCode;
     }
 
-    return this.formatShortUrl(originalUrl, shortCode);
+    // create the generated dynamic short link
+    return this.formatShortUrl(product.toLowerCase(), shortCode);
   }
 
   public async resolve(shortCode: string): Promise<string> {
@@ -68,8 +70,8 @@ export class DynamicLinksService {
     return finalUrl;
   }
 
-  private formatShortUrl(originalUrl: string, code: string): string {
-    const domain = `${originalUrl.split('.')[0]}.page.link`;
-    return `${domain}/${code}?d=1`;
+  private formatShortUrl(product: string, code: string): string {
+    const domain = `https://${product}${process.env.SHORT_LINK_DOMAIN_PART}`;
+    return `${domain}/${code}`;
   }
 }
