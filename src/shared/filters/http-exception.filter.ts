@@ -7,13 +7,17 @@ import {
 } from '@nestjs/common';
 import { ErrorClass } from '../classes/error.class';
 
-@Catch()
+@Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
   private readonly logger = new Logger(HttpExceptionFilter.name);
 
   catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
+
+    // ✅ Prevent overriding redirects or completed responses
+    if (response.headersSent) return;
+
     const request = ctx.getRequest();
    
     const lang = request.headers.lang || "en";

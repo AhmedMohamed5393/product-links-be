@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Param, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Query, Res } from "@nestjs/common";
 import { CreateLinkDto } from "./dtos/create-link.dto";
 import { DynamicLinksService } from "./dynamic-links.service";
 import { SuccessClass } from "src/shared/classes/success.class";
 import { ApiOperation, ApiBody, ApiResponse, ApiParam } from "@nestjs/swagger";
+import { Response } from "express";
 
 @Controller('dynamic_links')
 export class DynamicLinksController {
@@ -21,8 +22,16 @@ export class DynamicLinksController {
   @ApiParam({ name: 'code', type: String })
   @ApiResponse({ status: 302, description: 'Redirects to the original long URL' })
   @Get(':code')
-  public async redirect(@Param('code') code: string) {
-    const url = await this.service.resolve(code);
-    return new SuccessClass({ url }, 'Link is resolved successfully');
+  public async redirect(
+    @Param('code') code: string,
+    @Query('d') debug: string,
+    @Res() res: Response,
+  ) {
+    const data = await this.service.resolve(code, debug);
+    if (debug != '1') {
+      return res.status(302).redirect(data);
+    }
+
+    return new SuccessClass(data, 'Link is resolved successfully');
   }
 }
