@@ -45,7 +45,7 @@ export class DynamicLinksService {
     }
 
     // create the generated dynamic short link
-    return this.formatShortUrl(product.toLowerCase(), shortCode);
+    return this.formatShortUrl(product, shortCode);
   }
 
   public async resolve(shortCode: string): Promise<string> {
