@@ -7,7 +7,7 @@ export class CreateLinkDto {
   @IsEnum(ProductEnum)
   product: string;
 
-  @ApiProperty({ example: 'https://paytally.com/payment/123' })
+  @ApiProperty({ example: 'https://dev.paytally.kib.com.kw/catalogue/E8F4423E-F36B-1410-8FF0-003A2A6D8F83' })
   @IsUrl()
   originalUrl: string;
 
