@@ -1,11 +1,7 @@
-import { Injectable, Inject, NotFoundException } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { LoggingService } from "../shared/modules/logging/logging.service";
 import { CreateLinkDto } from "./dtos/create-link.dto";
 import { DynamicLink } from "./entities/dynamic-links.entity";
-import {
-    DYNAMIC_LINK_CONFIG,
-    DynamicLinkModuleConfig,
-} from "./interfaces/dynamic-link-config.interface";
 import { generateShortCode } from "./utils/short-code-generator";
 import { DynamicLinkRepository } from "./repositories/dynamic-links.repository";
 import { RedisService } from "@shared/services/index.service";
@@ -16,8 +12,6 @@ export class DynamicLinksService {
     private readonly redisService: RedisService,
     private readonly loggingService: LoggingService,
     private readonly repository: DynamicLinkRepository,
-    @Inject(DYNAMIC_LINK_CONFIG)
-    private readonly config: DynamicLinkModuleConfig,
   ) {}
 
   public async generateLink(dto: CreateLinkDto): Promise<string> {
