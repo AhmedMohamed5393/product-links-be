@@ -38,7 +38,7 @@ export class CreateLinkDto {
   @IsOptional()
   campaign?: string;
 
-  @ApiPropertyOptional({ example: 'any_custom_param' })
+  @ApiPropertyOptional({ example: 'source=qr' })
   @IsOptional()
   param?: string;
 

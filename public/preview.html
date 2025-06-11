@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dynamic Link Preview</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #fff;
+      margin: 0;
+      padding: 2rem;
+      text-align: center;
+      color: #333;
+    }
+
+    .warning {
+      background-color: #fdecea;
+      border: 1px solid #f5c2c0;
+      color: #b71c1c;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      font-weight: bold;
+    }
+
+    .link-title {
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
+      font-weight: bold;
+      color: #1976d2;
+    }
+
+    .grid {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .column {
+      flex: 1;
+      min-width: 250px;
+      border-top: 4px solid;
+      padding-top: 1rem;
+    }
+
+    .android { border-color: #00bfa5; }
+    .ios { border-color: #03a9f4; }
+    .desktop { border-color: #c2185b; }
+
+    .column h3 {
+      margin-bottom: 1rem;
+    }
+
+    .step {
+      background-color: #f0f0f0;
+      margin: 1rem 0;
+      padding: 0.75rem;
+      border-radius: 6px;
+    }
+
+    .step a {
+      color: #1976d2;
+      text-decoration: none;
+    }
+
+    .step a:hover {
+      text-decoration: underline;
+    }
+
+    .note {
+      font-size: 0.9rem;
+      color: #777;
+      margin-top: 2rem;
+    }
+
+    .footer {
+      margin-top: 3rem;
+      font-size: 0.8rem;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <div class="warning" id="warning">⚠ The dynamic link has 1 warning(s)</div>
+  <div class="link-title">🔗 Dynamic Link Preview</div>
+
+  <div class="grid">
+    <div class="column android">
+      <h3>Android</h3>
+      <div class="step">Click → <a id="android-deep" target="_blank" href="#">App with Deep Link</a></div>
+      <div class="step">Type into browser → <a id="android-store" target="_blank" href="#">Play Store</a></div>
+    </div>
+
+    <div class="column ios">
+      <h3>iOS</h3>
+      <div class="step">iOS ≥ 9 → Click → <a id="ios-deep" target="_blank" href="#">App with Custom Scheme</a></div>
+      <div class="step">iOS &lt; 9 → Type into browser → <a id="ios-scheme" target="_blank" href="#">Use Custom Scheme</a></div>
+    </div>
+
+    <div class="column desktop">
+      <h3>Desktop</h3>
+      <div class="step">Click → <a id="desktop-link" target="_blank" href="#">Web Link</a></div>
+      <div class="step">Type into browser → <a id="desktop-typed" target="_blank" href="#">Web Link</a></div>
+    </div>
+  </div>
+
+  <div class="note">This is a preview. Actual behavior may differ based on platform and device capabilities.</div>
+
+  <div class="footer" id="footer"></div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+
+    const originalUrl = params.get('originalUrl') || '#';
+    const iosUrl = params.get('iosUrl') || originalUrl;
+    const iosAppStoreId = params.get('iosAppStoreId');
+    const androidUrl = params.get('androidUrl') || originalUrl;
+    const androidPackageName = params.get('androidPackageName');
+    const desktopUrl = params.get('desktopUrl') || originalUrl;
+    const code = params.get('code') || '';
+
+    // Android
+    document.getElementById('android-deep').href = androidUrl;
+    document.getElementById('android-store').href = androidPackageName
+      ? `https://play.google.com/store/apps/details?id=${androidPackageName}`
+      : originalUrl;
+
+    // iOS
+    document.getElementById('ios-deep').href = iosUrl;
+    document.getElementById('ios-scheme').href = iosUrl;
+    if (iosAppStoreId) {
+      document.getElementById('ios-scheme').href = `https://apps.apple.com/app/id${iosAppStoreId}`;
+    }
+
+    // Desktop
+    document.getElementById('desktop-link').href = desktopUrl;
+    document.getElementById('desktop-typed').href = desktopUrl;
+
+    // Footer
+    document.getElementById('footer').textContent = `Preview code: ${code}`;
+  </script>
+</body>
+</html>
